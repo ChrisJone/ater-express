@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/send/send",
+    "pages/uc/uc",
+    "pages/search/search"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2197D8",
+    "navigationBarTitleText": "爱特快递",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "backgroundColor": "#fafafa",
+    "borderStyle": "white",
+    "selectedColor": "#b4282d",
+    "color": "#666",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "查件",
+        "iconPath": "static/images/tab_icon/ic_menu_home_nor.png",
+        "selectedIconPath": "static/images/tab_icon/ic_menu_home_pressed.png"
+      },
+      {
+        "pagePath": "pages/send/send",
+        "text": "寄件",
+        "iconPath": "static/images/tab_icon/ic_menu_nav_nor.png",
+        "selectedIconPath": "static/images/tab_icon/ic_menu_nav_pressed.png"
+      },
+      {
+        "pagePath": "pages/uc/uc",
+        "text": "我的",
+        "iconPath": "static/images/tab_icon/ic_menu_me_nor.png",
+        "selectedIconPath": "static/images/tab_icon/ic_menu_me_pressed.png"
+      }
+    ]
+  }
+}

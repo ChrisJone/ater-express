@@ -1,0 +1,45 @@
+<!--index.wxml-->
+<view class="container">
+  <view class='index-search'>
+        <!-- 查件区域 -->
+        <view class="search-express">
+            <!--扫描-->
+            <view class="scan">
+              <image src="../../static/images/scan.png" bindtap='scan'></image>
+            </view>
+            <!--输入框-->
+            <view class="input search-input">
+              <input name="expressCode" id="expressCode" class='express-input' placeholder="请输入您的快递单号"></input>
+            </view>
+            <image src="../../static/images/search.png" class='search-btn'></image>
+        </view>
+
+        
+  </view>
+  <!--历史查询-->
+  <view class='history-search'>
+    <view class='histor-header'>
+      <text class='txt'>历史查询</text>
+    </view>
+
+    <view class='history-list'>
+        <scroll-view scroll-y='true'>
+            <!-- 历史查件列表 点击可进入详情-->
+            <view wx:for="{{1}}" class='' data-id='' data-index='' class='list-item' >
+                <view class="item-key">
+                  <text>运单号：34242352423423</text>
+                </view>
+                <navigator url='' class='item-detail'>
+                  <view class='item-detail-time'>
+                    <text>2018-04-01 12:12:00</text>
+                  </view>
+                  <view class='item-detail-route'>
+                    【义乌转运中心】已发出 下一站【广州转运中心】
+                  </view>
+                </navigator>
+            </view>
+        </scroll-view>
+        
+    </view>
+  </view>
+</view>

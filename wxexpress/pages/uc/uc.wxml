@@ -1,0 +1,45 @@
+<!--pages/uc/uc.wxml-->
+<view class="container">
+    	<view  bindtap="bindViewTap" class="userinfo">
+		    <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}"   background-size="cover"></image>
+		    <text class="userinfo-nickname">{{ userInfo.nickName }}</text>
+	    </view>
+      <view class='user-menu'>
+        <view class='item'>
+          <navigator url="/pages/ucenter/order/order" class="a">
+            <image class="icon send" src='../../static/images/uc_icon/send.png'></image>
+            <text class="txt">寄件</text>
+          </navigator>
+        </view>
+        <view class='item'>
+          <navigator url="/pages/ucenter/order/order" class="a">
+            <image class="icon searchFee" src='../../static/images/uc_icon/searchFee.png'></image>
+            <text class="txt">运费查询</text>
+          </navigator>
+        </view>  
+        <view class='item no-border'>
+          <navigator url="/pages/ucenter/order/order" class="a">
+            <image class="icon address" src='../../static/images/uc_icon/address.png'></image>
+            <text class="txt">地址管理</text>
+          </navigator>
+        </view>  
+        <view class='item'>
+          <navigator url="/pages/ucenter/order/order" class="a">
+            <image class="icon my-package" src='../../static/images/uc_icon/my-package.png'></image>
+            <text class="txt">我的包裹</text>
+          </navigator>
+        </view>  
+        <view class='item'>
+          <navigator url="/pages/ucenter/order/order" class="a">
+            <image class="icon cs-service" src='../../static/images/uc_icon/cs-service.png'></image>
+            <text class="txt">客服投诉</text>
+          </navigator>
+        </view>
+        <view class='item no-border'>
+          <navigator url="/pages/ucenter/order/order" class="a">
+            <image class="icon network-center" src='../../static/images/uc_icon/network-center.png'></image>
+            <text class="txt">网点查询</text>
+          </navigator>
+        </view>
+      </view>
+</view>

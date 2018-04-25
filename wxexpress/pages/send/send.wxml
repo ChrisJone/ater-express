@@ -1,0 +1,4 @@
+<!--pages/send/send.wxml-->
+<view class="container">
+  寄件模块
+</view>
