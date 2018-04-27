@@ -18,6 +18,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log("onLoad");
+    //获取用户的登录信息
+    util.login().then(res => {
+      util.getUserInfo().then(res1 => {
+        wx.setStorageSync('userInfo', res1.userInfo);
+        app.globalData.userInfo = res1.userInfo;
+        this.setData({
+          userInfo: app.globalData.userInfo,
+        });
+      })
+    });
   },
 
   /**
@@ -31,18 +42,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let userInfo = wx.getStorageSync('userInfo');
-    let token = wx.getStorageSync('token');
 
-    // 页面显示
-    if (userInfo && token) {
-      app.globalData.userInfo = userInfo;
-      app.globalData.token = token;
-    }
-
-    this.setData({
-      userInfo: app.globalData.userInfo,
-    });
   },
 
   /**

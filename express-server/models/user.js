@@ -1,18 +1,25 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto'
 
-const MAX_LOGIN_ATTEMPTS = 5
-const LOCK_TIME          = 2 * 60 * 60 * 1000
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCK_TIME          = 2 * 60 * 60 * 1000;
 
 const Schema = mongoose.Schema({
 	username : String,
 	password : String,
 	avatar   : String,
-	tel      : Number,
+	mobile   : String,
+	gender	 : String,
 	email    : String,
 	nickname : String,
-	gender   : String,
 	birthday : Date,
+	wxOpenId : {
+		type : String,
+		required:true
+	},
+	registerTime : Date,
+	lastLoginTime : Date,
+	lastLoginIp : String,
 	loginAttempts: { 
 		type    : Number, 
 		required: true, 
@@ -26,21 +33,21 @@ const Schema = mongoose.Schema({
 		default: Date.now(),
 	},
 	update_at: Date,
-})
+});
 
 const reasons = Schema.statics.failedLogin = {
 	NOT_FOUND         : 0,
 	PASSWORD_INCORRECT: 1,
 	MAX_ATTEMPTS      : 2,
-}
+};
 
 Schema.virtual('isLocked').get(function() {
     return !!(this.lockUntil && this.lockUntil > Date.now())
-})
+});
 
 Schema.methods.comparePassword = function(candidatePassword) {
 	return crypto.createHash('md5').update(candidatePassword).digest('hex') === this.password
-}
+};
 
 Schema.methods.incLoginAttempts = function() {
     // if we have a previous lock that has expired, restart at 1
@@ -51,13 +58,13 @@ Schema.methods.incLoginAttempts = function() {
         })
     }
     // otherwise we're incrementing
-    const updates = { $inc: { loginAttempts: 1 } }
+    const updates = { $inc: { loginAttempts: 1 } };
     // lock the account if we've reached max attempts and it's not locked already
     if (this.loginAttempts + 1 >= MAX_LOGIN_ATTEMPTS && !this.isLocked) {
         updates.$set = { lockUntil: Date.now() + LOCK_TIME }
     }
     return this.updateAsync(updates)
-}
+};
 
 Schema.statics.getAuthenticated = function(username, password) {
     return this.findOneAsync({username: username})

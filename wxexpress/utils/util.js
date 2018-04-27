@@ -45,12 +45,33 @@ function getUserInfo() {
     })
   });
 }
-
+/**
+ * 调用微信登录
+ */
+function login() {
+  return new Promise(function (resolve, reject) {
+    wx.login({
+      success: function (res) {
+        if (res.code) {
+          //登录远程服务器
+          console.log(res)
+          resolve(res);
+        } else {
+          reject(res);
+        }
+      },
+      fail: function (err) {
+        reject(err);
+      }
+    });
+  });
+}
 
 module.exports = {
   formatTime: formatTime,
   checkSession: checkSession,
-  getUserInfo: getUserInfo
+  getUserInfo: getUserInfo,
+  login: login
 }
 
 

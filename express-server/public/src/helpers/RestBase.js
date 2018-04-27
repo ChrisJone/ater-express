@@ -7,7 +7,7 @@ class Ctrl{
             $timeout, 
             $ionicLoading, 
             $$Resource, 
-        })
+        });
 
         this.initModel()
 	}
@@ -153,6 +153,6 @@ Ctrl.$inject = [
 	'$timeout', 
 	'$ionicLoading', 
     '$$Resource',
-] 
+];
 
 export default Ctrl
