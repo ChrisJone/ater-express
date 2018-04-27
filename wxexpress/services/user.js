@@ -6,7 +6,7 @@ const api = require('../config/api.js');
  */
 function checkLogin() {
   return new Promise(function (resolve, reject) {
-    if (wx.getStorageSync('userInfo') && wx.getStorageSync('token')) {
+    if (wx.getStorageSync('userInfo')) {
 
       util.checkSession().then(() => {
         resolve(true);

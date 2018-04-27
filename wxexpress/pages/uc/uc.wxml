@@ -6,7 +6,7 @@
 	    </view>
       <view class='user-menu'>
         <view class='item'>
-          <navigator url="/pages/ucenter/order/order" class="a">
+          <navigator url="/pages/send/send" class="a" open-type='switchTab'>
             <image class="icon send" src='../../static/images/uc_icon/send.png'></image>
             <text class="txt">寄件</text>
           </navigator>
