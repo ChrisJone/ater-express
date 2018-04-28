@@ -86,19 +86,19 @@ class Ctrl{
 	 *     }
 	 */
 	wechatSignUp(req, res, next) {
-		const code = req.body.code
+		const code = req.body.code;
 		const body = {
 			username: null, 
 			password: res.jwt.setMd5('123456'), 
-		}
+		};
 
 		this.getSessionKey(code)
 		.then(doc => {
-			doc = JSON.parse(doc)
+			doc = JSON.parse(doc);
 			if (doc && doc.errmsg) return res.tools.setJson(doc.errcode, doc.errmsg)
 			if (doc && doc.openid) {
-				body.username = doc.openid
-				return this.model.findByName(doc.openid)
+				body.username = doc.openid;
+				return this.model.findByName(doc.openid);
 			}
 		})
 		.then(doc => {
