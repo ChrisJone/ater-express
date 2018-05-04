@@ -109,10 +109,10 @@ var config = {
                 exclude: [path.resolve(__dirname, 'node_modules')], 
                 query: { 
                     compact: false,
-                    presets: 'es2015',
+                    presets: 'latest',
                     plugins: [
                         'transform-object-assign',
-                        ['transform-es2015-classes', { loose: true }],
+                        ['transform-latest-classes', { loose: true }],
                     ]
                 }
             },

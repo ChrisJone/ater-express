@@ -13,11 +13,19 @@ const Schema = mongoose.Schema({
 	email    : String,
 	nickname : String,
 	birthday : Date,
+    country  : String,
+    province : String,
+    city     : String,
 	wxOpenId : {
 		type : String,
-		required:true
+		required : true,
+		default : ''
 	},
-	registerTime : Date,
+	registerTime : {
+		type: Date,
+		required:true,
+		default:Date.now(),
+	},
 	lastLoginTime : Date,
 	lastLoginIp : String,
 	loginAttempts: { 

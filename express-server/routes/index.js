@@ -8,6 +8,7 @@ import address from '../controllers/address'
 import order from '../controllers/order'
 import help from '../controllers/help'
 import user from '../controllers/user'
+import kdniaoSearch from '../controllers/kdniaoSearch';
 
 export default function(app) {
 	new common(app)
@@ -20,4 +21,5 @@ export default function(app) {
 	new order(app)
 	new help(app)
 	new user(app)
+	new kdniaoSearch(app)
 }

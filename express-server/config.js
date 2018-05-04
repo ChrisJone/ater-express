@@ -32,6 +32,6 @@ export default {
 	},
 	wechat: {
 		appid: 'wx49f1a9f19223d6c6',
-		secret: '991eed0981cab7f0ed1ac5931d4b4c22',
+		secret: '0db330162cfb5200531c6db0dfe362a3',
 	},
 }

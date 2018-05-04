@@ -26,6 +26,17 @@ class Common{
 			username: username
 		})
 	}
+
+    /**
+	 * 根据openId查找唯一的用户
+     * @param openId
+     * @returns {*}
+     */
+	findByOpenId(openId){
+		return this.model.findOneAsync({
+            wxOpenId : openId
+		});
+	}
 }
 
 export default new Common(Model)

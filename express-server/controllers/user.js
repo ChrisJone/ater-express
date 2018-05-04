@@ -10,17 +10,17 @@ class Ctrl{
 		Object.assign(this, {
 			app, 
 			model: proxy.user, 
-		})
+		});
 
-		this.init()
+		this.init();
 	}
 
 	/**
 	 * 初始化
 	 */
 	init() {
-		this.routes()
-		this.initSuperAdmin()
+		this.routes();
+		this.initSuperAdmin();
 	}
 
 	/**
@@ -54,10 +54,10 @@ class Ctrl{
 	 * code 换取 session_key
 	 */
 	getSessionKey(code) {
-		const appid = config.wechat.appid
-		const secret = config.wechat.secret
-		const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`
-		return this.requestAsync(url)
+		const appid = config.wechat.appid;
+		const secret = config.wechat.secret;
+		const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`;
+		return this.requestAsync(url);
 	}
 
 	/**
@@ -86,26 +86,43 @@ class Ctrl{
 	 *     }
 	 */
 	wechatSignUp(req, res, next) {
+		console.log(req.body);
 		const code = req.body.code;
+		const userInfo = req.body.userInfo;
 		const body = {
-			username: null, 
-			password: res.jwt.setMd5('123456'), 
+			username: userInfo.nickName,
+			password: res.jwt.setMd5('123456'),
+            avatar: userInfo.avatarUrl,
+            gender: userInfo.gender,
+            nickname: userInfo.nickName,
+            country  : userInfo.country,
+            province : userInfo.province,
+            city     : userInfo.city,
+            wxOpenId : null,
 		};
 
 		this.getSessionKey(code)
 		.then(doc => {
+			console.log(doc);
 			doc = JSON.parse(doc);
-			if (doc && doc.errmsg) return res.tools.setJson(doc.errcode, doc.errmsg)
+			if (doc && doc.errmsg) return res.tools.setJson(doc.errcode, doc.errmsg);
 			if (doc && doc.openid) {
-				body.username = doc.openid;
-				return this.model.findByName(doc.openid);
+				body.wxOpenId = doc.openid;
+				return this.model.findByOpenId(doc.openid);
 			}
 		})
 		.then(doc => {
-			if (!doc) return this.model.newAndSave(body)
-			if (doc && doc._id) return res.tools.setJson(1, '用户名已存在')
+			if (!doc) return this.model.newAndSave(body);
+			if (doc && doc._id) {
+			    //登录成功，直接跳出
+                Promise.resolve(res.tools.setJson(0,'登录成功',{
+                    userInfo:userInfo,
+                    token:res.jwt.setToken(doc._id)
+                }));
+            }
 		})
 		.then(doc => {
+		    console.log('注册成功步骤>>>>>>>>>>>>>>');
 			if (doc && doc._id) return res.tools.setJson(0, '注册成功', {
 				token: res.jwt.setToken(doc._id)
 			})
@@ -139,13 +156,13 @@ class Ctrl{
 	 *     }
 	 */
 	wechatSignIn(req, res, next) {
-		const code = req.body.code
+		const code = req.body.code;
 
 		this.getSessionKey(code)
 		.then(doc => {
-			doc = JSON.parse(doc)
-			if (doc && doc.errmsg) return res.tools.setJson(doc.errcode, doc.errmsg)
-			if (doc && doc.openid) return this.model.findByName(doc.openid)
+			doc = JSON.parse(doc);
+			if (doc && doc.errmsg) return res.tools.setJson(doc.errcode, doc.errmsg);
+			if (doc && doc.openid) return this.model.findByOpenId(doc.openid);
 		})
 		.then(doc => {
 			if (!doc) return res.tools.setJson(1, '用户名不存在')
@@ -342,12 +359,12 @@ class Ctrl{
 	 */
 	signOut(req, res, next) {
 		if (req.user) {
-			new jwtauth().expireToken(req.headers)
-			delete req.user	
-			delete this.app.locals.token
-			return res.tools.setJson(0, '登出成功')
+			new jwtauth().expireToken(req.headers);
+			delete req.user	;
+			delete this.app.locals.token;
+			return res.tools.setJson(0, '登出成功');
 		}
-		return res.tools.setJson(1, '登出失败')
+		return res.tools.setJson(1, '登出失败');
 	}
 
 	/**

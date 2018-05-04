@@ -1,6 +1,7 @@
 // pages/uc/uc.js
 var util = require('../../utils/util.js');
 var api = require('../../config/api.js');
+var userApi = require('../../services/user.js');
 var app = getApp();
 Page({
 
@@ -19,16 +20,12 @@ Page({
    */
   onLoad: function (options) {
     console.log("onLoad");
-    //获取用户的登录信息
-    util.login().then(res => {
-      util.getUserInfo().then(res1 => {
-        wx.setStorageSync('userInfo', res1.userInfo);
-        app.globalData.userInfo = res1.userInfo;
-        this.setData({
-          userInfo: app.globalData.userInfo,
-        });
+    userApi.loginByWeixin().then(res=>{
+      console.log(res);
+      this.setData({
+        userInfo: res.data.userInfo
       })
-    });
+    })
   },
 
   /**
