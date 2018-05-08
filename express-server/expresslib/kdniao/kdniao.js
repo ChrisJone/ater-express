@@ -1,4 +1,4 @@
-//var kdniaoApi = require('kdniaoApi');
+var kdniaoApi = require('./kdniaoApi');
 import crypto from "crypto";
 
 var jwt = require('../../common/jwtauth');
@@ -54,17 +54,17 @@ function getOrderTracesByJson(expCode,expNo) {
 
     var requestData={'OrderCode':'','ShipperCode':expCode,'LogisticCode': expNo};
     var requestEncodeData = encodeURI(requestData);
-    var md5value = crypto.createHash('md5').update(requestData + app_key).digest('hex');
+    var md5value = crypto.createHash('md5').update(requestData + kdniaoApi.app_key).digest('hex');
     var DataSign = encodeURI(new Buffer((md5value),'base64'));
 
     var _post_data = {
         'RequestData':requestEncodeData,
-        'EBusinessID': e_business_id,
-        'RequestType':'1002',
+        'EBusinessID': kdniaoApi.e_business_id,
+        'RequestType':kdniaoApi.post_module.ebusinessOrderHandler.code,
         'DataSign':DataSign,
-        'DataType':'2'
+        'DataType':'2' //json格式
     };
-    sendRequest(sever_url,_post_data,'POST',function (data) {
+    sendRequest(kdniaoApi.post_module.ebusinessOrderHandler.url,_post_data,'POST',function (data) {
         console.log(data);
         return data;
     })

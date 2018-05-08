@@ -9,9 +9,9 @@
             </view>
             <!--输入框-->
             <view class="input search-input">
-              <input name="expressCode" id="expressCode" class='express-input' placeholder="请输入您的快递单号"></input>
+              <input name="expressCode" id="expressCode" class='express-input' placeholder="请输入您的快递单号"
+              confirm-type='search' bindconfirm='searchExp'></input>
             </view>
-            <image src="../../static/images/search.png" class='search-btn'></image>
         </view>
 
         

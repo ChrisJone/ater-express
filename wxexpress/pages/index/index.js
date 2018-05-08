@@ -50,5 +50,11 @@ Page({
         console.log(res)
       }
     });
+  },
+  /**
+   * 查询快递
+   */
+  searchExp:function(e){
+    console.log(e.detail.value);
   }
 })

@@ -13,6 +13,8 @@ App({
     }).catch(() => {
 
     });
+    //获取查询历史快递
+    this.globalData.searchExpData = wx.getStorageInfoSync('searchExpData');
   },
   globalData: {
     userInfo: {
@@ -21,5 +23,6 @@ App({
       avatarUrl: 'http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png'
     },
     token: '',
+    searchExpData: {},
   }
 })

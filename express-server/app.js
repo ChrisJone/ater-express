@@ -71,16 +71,16 @@ app.use((req, res, next) => {
 })
 
 // index
-// app.get('/', (req, res) => {
-// 	res.render('index')
-// })
+app.get('/', (req, res) => {
+	res.render('index')
+})
 
 // custom middleware
 app.use(/\/api/, tools)
-// app.use(/^((?!sign\/up|sign\/in|captcha).)+$/, [
-// 	jwt({ secret: config.secret}),
-// 	auth.verifyToken.bind(auth)
-// ])
+app.use(/^((?!sign\/up|sign\/in|captcha).)+$/, [
+	jwt({ secret: config.secret}),
+	auth.verifyToken.bind(auth)
+])
 
 // 加载路由
 routes(app)
