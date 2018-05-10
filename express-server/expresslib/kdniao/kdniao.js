@@ -1,22 +1,20 @@
 var kdniaoApi = require('./kdniaoApi');
 import crypto from "crypto";
+var querystring = require('querystring');
 
 var jwt = require('../../common/jwtauth');
 
 function sendRequest(url,data,method,fn) {
     data = data || null;
-    if(data == null){
-        var content = require("querystring").stringify(data);
-    }else{
-        var content = JSON.stringify(data);//json format
-    }
+    var content = querystring.stringify(data);
 
+    console.log('请求参数-->'+content);
     var parse_url = (require('url')).parse(url,true);
     var isHttp = parse_url.protocol == 'http:';
     var option={
         host:parse_url.hostname,
         port:parse_url.port||(isHttp?80:443),
-        path:parse_url.path,
+        path:parse_url.path+"?"+content,
         method:method,
         headers:{
             'accept':'*/*',
@@ -36,7 +34,6 @@ function sendRequest(url,data,method,fn) {
             fn!=undefined && fn(_data);
         });
     });
-    req.write(content);
     req.end();
 };
 
@@ -46,11 +43,6 @@ function sendRequest(url,data,method,fn) {
  * @param expNo 物流单号
  */
 function getOrderTracesByJson(expCode,expNo) {
-
-    var e_business_id='1335594';
-        //电商加密私钥，快递鸟提供，注意保管，不要泄漏
-       var app_key = '4567c87b-2af9-415c-95de-b61eca8773fc';
-        var sever_url = 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx';
 
     var requestData={'OrderCode':'','ShipperCode':expCode,'LogisticCode': expNo};
     var requestEncodeData = encodeURI(requestData);

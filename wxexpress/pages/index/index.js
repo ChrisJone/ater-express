@@ -2,6 +2,7 @@
 //获取应用实例
 const app = getApp();
 const kdniaoExpData= require('../../data/kdniaoexpress');
+const kdniao = require('../../services/kdniao');
 
 Page({
   data: {
@@ -58,6 +59,7 @@ Page({
    */
   searchExp:function(e){
      var expNo = e.detail.value;//用户输入的快递单号
+      kdniao.searchByExpNo("32423424234");
   },
   selectExpress:function(e){
     var index = e.detail.value;
