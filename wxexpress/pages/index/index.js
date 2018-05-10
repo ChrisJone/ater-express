@@ -1,12 +1,14 @@
 //index.js
 //获取应用实例
-const app = getApp()
+const app = getApp();
+const kdniaoExpData= require('../../data/kdniaoexpress');
 
 Page({
   data: {
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    expData:kdniaoExpData.expressData
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
@@ -55,6 +57,10 @@ Page({
    * 查询快递
    */
   searchExp:function(e){
-    console.log(e.detail.value);
+     var expNo = e.detail.value;//用户输入的快递单号
+  },
+  selectExpress:function(e){
+    var index = e.detail.value;
+    console.log(this.data.expData[index].key);
   }
 })
