@@ -20,13 +20,19 @@ class Ctrl{
     }
 
     getOrderTracesByJson(req,res,next){
-        const orderNo = req.orderNo;
-        const expNo = req.expNo;
+        let orderNo = req.body.orderNo;
+        let expNo = req.body.expNo;
+        console.log('expNo-->'+expNo);
+        if(!expNo){
+            return res.tools.setJson(1,'请输入快递单号',{});
+        }
+
+        orderNo = orderNo | null;
 
         console.log('orderNo'+orderNo);
 
-        return res.tools.setJson('0','处理成功',{
-            data:kdniao.getOrderTracesByJson(orderNo,expNo)
+        return res.tools.setJson(0,'处理成功',{
+            data:kdniao.getOrderTracesByJson("","3924730222455")
         })
 
     }

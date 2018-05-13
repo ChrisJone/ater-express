@@ -31,11 +31,10 @@ function request(url, data = {}, method = "GET") {
         'X-Nideshop-Token': wx.getStorageSync('token')
       },
       success: function (res) {
-        console.log(res);
         if (res.statusCode == 200) {
 
           let code = res.data.meta.code;
-          if (code != 0) {
+          if (code == 403) {
             //需要登录后才可以操作
 
             let code = null;
@@ -116,7 +115,6 @@ function login() {
       success: function (res) {
         if (res.code) {
           //登录远程服务器
-          console.log(res)
           resolve(res);
         } else {
           reject(res);

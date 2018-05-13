@@ -8,10 +8,14 @@ function searchByExpNo(expNo){
         util.request(api.kdniaoSearch.ExpressSearchUrl,{expNo:expNo,orderNo:''},
         'POST').then((res) =>{
             let code = res.meta.code;
+            console.log('the code is -->'+code);
             if(code === 0){
                 console.log(code);
             }else{
-                console.log(res);
+              wx.showToast({
+                    title:res.meta.message,
+                    icon:none
+                });
             }
         })
     });

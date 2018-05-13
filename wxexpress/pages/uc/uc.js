@@ -12,7 +12,7 @@ Page({
     userInfo:{
 
     },
-
+    canIUse:true,
   },
 
   /**
@@ -20,12 +20,19 @@ Page({
    */
   onLoad: function (options) {
     console.log("onLoad");
-    userApi.loginByWeixin().then(res=>{
-      console.log(res);
-      this.setData({
-        userInfo: res.data.userInfo
-      })
-    })
+    var that = this;
+    wx.getSetting({
+      success: function(res){
+        if (res.authSetting['scope.userInfo']) {
+          userApi.loginByWeixin().then(res=>{
+            that.setData({
+              userInfo:res.data.userInfo,
+              canIUse : false,
+            });
+          });
+        }  
+      }  
+    })    
   },
 
   /**
@@ -75,5 +82,14 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+
+  bindGetUserInfo : function (e){
+    userApi.loginByWeixin().then(res=>{
+      this.setData({
+        userInfo:res.data.userInfo,
+        canIUse : false,
+      });
+    });
   }
 })

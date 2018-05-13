@@ -2,8 +2,6 @@ var kdniaoApi = require('./kdniaoApi');
 import crypto from "crypto";
 var querystring = require('querystring');
 
-var jwt = require('../../common/jwtauth');
-
 function sendRequest(url,data,method,fn) {
     data = data || null;
     var content = querystring.stringify(data);
@@ -20,7 +18,7 @@ function sendRequest(url,data,method,fn) {
             'accept':'*/*',
             'connection':'Keep-Alive',
             'user-agent':'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)',
-            'Content-Type':'application/x-www-form-urlencoded'
+            'content-Type':'application/x-www-form-urlencoded'
         }
     };
 
@@ -30,12 +28,33 @@ function sendRequest(url,data,method,fn) {
         res.on('data', function(chunk){
             _data += chunk;
         });
+        res.on('error',function (chunk) {
+            _data += chunk;
+        });
         res.on('end', function(){
             fn!=undefined && fn(_data);
         });
     });
     req.end();
 };
+
+
+function postRequestData(data,requestType){
+    let requestEncodeData = encodeUriQuery(data,'utf8');
+    let md5value = md5(data + kdniaoApi.app_key,'utf8');
+    let base64Value = Buffer.from(md5value);
+    let dataSign = encodeUriQuery(base64Value.toString('base64'),'utf8');
+
+    console.log('dataSign is >>>>'+dataSign);
+    let _post_data = {
+        'RequestData':requestEncodeData,
+        'EBusinessID': kdniaoApi.e_business_id,
+        'RequestType':requestType,
+        'DataSign':dataSign,
+        'DataType':'2' //json格式
+    };
+    return _post_data;
+}
 
 /**
  * 即时查询物流状态
@@ -44,23 +63,60 @@ function sendRequest(url,data,method,fn) {
  */
 function getOrderTracesByJson(expCode,expNo) {
 
-    var requestData={'OrderCode':'','ShipperCode':expCode,'LogisticCode': expNo};
-    var requestEncodeData = encodeURI(requestData);
-    var md5value = crypto.createHash('md5').update(requestData + kdniaoApi.app_key).digest('hex');
-    var DataSign = encodeURI(new Buffer((md5value),'base64'));
+    let shipperCode = expNoVerify('1234561');
+    console.log("shipperCode is -->"+shipperCode);
+    if(!shipperCode){
+        return null;
+    }
+    let requestData="{'OrderCode':'','ShipperCode':'"+expCode+"','LogisticCode': '"+expNo+"'}";
 
-    var _post_data = {
-        'RequestData':requestEncodeData,
-        'EBusinessID': kdniaoApi.e_business_id,
-        'RequestType':kdniaoApi.post_module.ebusinessOrderHandler.code,
-        'DataSign':DataSign,
-        'DataType':'2' //json格式
-    };
+    let _post_data = postRequestData(requestData,kdniaoApi.post_module.ebusinessOrderHandler.searchType.immediate_search);
+    sendRequest(kdniaoApi.post_module.ebusinessOrderHandler.dev_url,_post_data,'POST',function (data) {
+        console.log(data);
+        return data;
+    })
+}
+
+/**
+ * 单号识别物流公司
+ * 返回可能会有多家，排名靠前的命中率更高
+ * @param expNo
+ */
+function expNoVerify(expNo) {
+    let requestData = "{'LogisticCode':'" + expNo + "'}";
+
+    let _post_data = postRequestData(requestData,kdniaoApi.post_module.ebusinessOrderHandler.searchType.order_verify);
+
     sendRequest(kdniaoApi.post_module.ebusinessOrderHandler.url,_post_data,'POST',function (data) {
         console.log(data);
         return data;
     })
 }
+
+
+
+    /**
+     * 编码URI
+     * @param  {String} value
+     * @param  {String} pctEncodeSpaces
+     * @return {String}
+     */
+    function encodeUriQuery(value, pctEncodeSpaces) {
+        return encodeURIComponent(value)
+            .replace(/%40/gi, '@')
+            .replace(/%3A/gi, ':')
+            .replace(/%24/g, '$')
+            .replace(/%2C/gi, ',')
+            .replace(/%3B/gi, ';')
+            .replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'))
+    }
+
+    function md5(value,encode){
+        let md5Value = crypto.createHash("md5");
+        md5Value.update(value,encode);
+        return md5Value.digest('hex');
+    }
+
 
 module.exports={
     getOrderTracesByJson:getOrderTracesByJson,

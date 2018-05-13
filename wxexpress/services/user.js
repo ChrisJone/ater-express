@@ -25,6 +25,7 @@ function loginByWeixin(){
   return new Promise(function(resolve,reject){
     return util.login().then((res)=>{
       code = res.code;
+      console.log('wxlogin:'+code);
       return util.getUserInfo();
     }).then((userInfo)=>{
       util.request(api.AuthLoginByWeixin,{code:code,userInfo:userInfo.userInfo},'POST').then(res =>{
