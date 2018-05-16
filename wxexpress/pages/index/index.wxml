@@ -11,19 +11,14 @@
             <view class="input search-input">
               <input name="expressCode" id="expressCode" class='express-input' placeholder="请输入您的快递单号"
               confirm-type='search' bindconfirm='searchExp'></input>
-            </view>
-            <picker mode="selector" value="0" range="{{expData}}" range-key="code" bindchange="selectExpress">
-              <view class="picker">
-                  当前选择：{{expData[index].code}}
-              </view>
-            </picker>             
+            </view>           
             <button type="primary" bindtap="searchExp" size="10">查询</button>
         </view>
   </view>
 
   <view class="search-form">
-    <form bindSubmit="" >
-    
+    <form bindsubmit=''>
+        
     </form>
   </view>
   <!--历史查询-->

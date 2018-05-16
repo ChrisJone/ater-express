@@ -45,7 +45,6 @@ function postRequestData(data,requestType){
     let base64Value = Buffer.from(md5value);
     let dataSign = encodeUriQuery(base64Value.toString('base64'),'utf8');
 
-    console.log('dataSign is >>>>'+dataSign);
     let _post_data = {
         'RequestData':requestEncodeData,
         'EBusinessID': kdniaoApi.e_business_id,
@@ -63,18 +62,22 @@ function postRequestData(data,requestType){
  */
 function getOrderTracesByJson(expCode,expNo) {
 
-    let shipperCode = expNoVerify('1234561');
-    console.log("shipperCode is -->"+shipperCode);
-    if(!shipperCode){
-        return null;
-    }
-    let requestData="{'OrderCode':'','ShipperCode':'"+expCode+"','LogisticCode': '"+expNo+"'}";
+    return new Promise(function (resolve,reject){
+        return expNoVerify('2343242342323').then(res =>{
+            let shipperCode = res;
+            if(!shipperCode){
+                return null;
+            }
 
-    let _post_data = postRequestData(requestData,kdniaoApi.post_module.ebusinessOrderHandler.searchType.immediate_search);
-    sendRequest(kdniaoApi.post_module.ebusinessOrderHandler.dev_url,_post_data,'POST',function (data) {
-        console.log(data);
-        return data;
-    })
+            let requestData="{'OrderCode':'','ShipperCode':'"+shipperCode+"','LogisticCode': '"+expNo+"'}";
+
+            let _post_data = postRequestData(requestData,kdniaoApi.post_module.ebusinessOrderHandler.searchType.immediate_search);
+            sendRequest(kdniaoApi.post_module.ebusinessOrderHandler.url,_post_data,'POST',function (data) {
+                console.log('查询单号验证>>>>>>'+data);
+                resolve(data);
+            });
+        })
+    });
 }
 
 /**
@@ -83,16 +86,30 @@ function getOrderTracesByJson(expCode,expNo) {
  * @param expNo
  */
 function expNoVerify(expNo) {
-    let requestData = "{'LogisticCode':'" + expNo + "'}";
+    return new Promise(function (resolve, reject) {
+        let requestData = "{'LogisticCode':'" + expNo + "'}";
 
-    let _post_data = postRequestData(requestData,kdniaoApi.post_module.ebusinessOrderHandler.searchType.order_verify);
+        let _post_data = postRequestData(requestData, kdniaoApi.post_module.ebusinessOrderHandler.searchType.order_verify);
 
-    sendRequest(kdniaoApi.post_module.ebusinessOrderHandler.url,_post_data,'POST',function (data) {
-        console.log(data);
-        return data;
-    })
+
+        sendRequest(kdniaoApi.post_module.ebusinessOrderHandler.url, _post_data, 'POST', function (data) {
+            var _retData = JSON.parse(data);
+            var _data = null;
+            if (_retData.Success == true) {
+                var verList = _retData.Shippers;
+                if (verList.length > 0) {
+                    _data = verList[0].ShipperCode;
+                    resolve(_data);
+                } else {
+                    reject(_retData);
+                }
+            } else {
+                reject(_retData);
+            }
+
+        })
+    });
 }
-
 
 
     /**
@@ -120,4 +137,5 @@ function expNoVerify(expNo) {
 
 module.exports={
     getOrderTracesByJson:getOrderTracesByJson,
+    expNoVerify:expNoVerify,
 };

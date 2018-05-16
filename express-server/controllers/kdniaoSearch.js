@@ -30,11 +30,13 @@ class Ctrl{
         orderNo = orderNo | null;
 
         console.log('orderNo'+orderNo);
-
-        return res.tools.setJson(0,'处理成功',{
-            data:kdniao.getOrderTracesByJson("","3924730222455")
-        })
-
+        var _data = null;
+        kdniao.getOrderTracesByJson("","1111111111111").then(doc=>{
+            _data = doc;
+            return res.tools.setJson(0,'处理成功',{
+                expressData:_data
+            })
+        }).catch(err => next(err));
     }
 
 }
