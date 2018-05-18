@@ -36,7 +36,11 @@ class Ctrl{
             return res.tools.setJson(0,'处理成功',{
                 expressData:_data
             })
-        }).catch(err => next(err));
+        }).catch(err=>{
+            return res.tools.setJson(1,'处理失败',{
+                errMsg:err
+            })
+        });
     }
 
 }

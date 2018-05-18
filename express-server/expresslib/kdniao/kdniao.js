@@ -76,6 +76,9 @@ function getOrderTracesByJson(expCode,expNo) {
                 console.log('查询单号验证>>>>>>'+data);
                 resolve(data);
             });
+        }).catch(err=>{
+            console.log('error enpNoVerify>>>>'+err.Reason);
+            reject("输入有误,请重新输入");
         })
     });
 }
