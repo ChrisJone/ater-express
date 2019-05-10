@@ -3,24 +3,19 @@
   <view class='index-search'>
         <!-- 查件区域 -->
         <view class="search-express">
-            <!--扫描-->
+            <!--输入框-->
+            <view class="input search-input">
+              <image src='../../static/images/search.png'></image>
+              <input name="expressCode" id="expressCode" class='express-input' placeholder="请输入您的快递单号"
+              confirm-type='search' bindconfirm='searchExp'></input>
+            </view>
+             <!--扫描-->
             <view class="scan">
               <image src="../../static/images/scan.png" bindtap='scan'></image>
             </view>
-            <!--输入框-->
-            <view class="input search-input">
-              <input name="expressCode" id="expressCode" class='express-input' placeholder="请输入您的快递单号"
-              confirm-type='search' bindconfirm='searchExp'></input>
-            </view>           
-            <button type="primary" bindtap="searchExp" size="10">查询</button>
         </view>
   </view>
 
-  <view class="search-form">
-    <form bindsubmit=''>
-        
-    </form>
-  </view>
   <!--历史查询-->
   <view class='history-search'>
     <view class='histor-header'>

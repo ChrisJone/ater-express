@@ -36,5 +36,6 @@
         "selectedIconPath": "static/images/tab_icon/ic_menu_me_pressed.png"
       }
     ]
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

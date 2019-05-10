@@ -9,5 +9,4 @@ function expDataHanlder(cacheExpData,inData){
     var expNo = inData.LogisticCode;
     var shipperCode = inData.ShipperCode;
     var key = shipperCode+"_"+expNo;
-    var expList = inData.
 }

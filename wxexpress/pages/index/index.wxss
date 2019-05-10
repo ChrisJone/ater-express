@@ -5,38 +5,35 @@
   padding:0 30rpx;
   display:flex;
   align-items:center;
+  background-color: #2197D8
 }
 
 .index-search .search-express{
-  width:690rpx;
+  width:100%;
   height:56rpx;
   background:#fff;
   border-radius:8rpx;
   display:flex;
-  align-items:center;
+}
+.search-express .search-input{
+  float:left;
+  width:90%;
+}
+.search-input image{
+  float: left;
+  padding-top: 10rpx;
+  height: 50rpx;
+  width: 50rpx;
 }
 
-.scan,.search-btn{
-  height: 40rpx;
-  width: 40rpx;
-  margin: 10rpx;
+.scan{
+  width: 10%;
 }
 .scan image{
   float: left;
-  height: 40rpx;
-  width: 40rpx;
-}
-
-.search-btn{
-  float: right;
+  padding-top: 10rpx;
   height: 50rpx;
-  width:50rpx;
-}
-.search-input{
-  width: 580rpx;
-  padding-top: 3rpx;
-  padding-left: 3rpx;
-  text-align: center;
+  width: 40rpx;
 }
 
 .history-search{
